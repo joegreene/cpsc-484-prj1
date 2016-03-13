@@ -375,7 +375,6 @@ namespace gmath {
     }
   };
 
-  /*
   // Matrix<SCALAR, HEIGHT, WIDTH> represents a mathematical vector of
   // HEIGHT x WIDTH dimension, where each base element is of type
   // SCALAR.
@@ -402,24 +401,25 @@ namespace gmath {
 
     // Initialize all elements to initializer, 0 by default.
     Matrix(SCALAR initializer = 0) {
-      // TODO: implement this function
-
-      // hint: reuse other overloaded operators, instead of writing
-      // this from scratch
+      (*this) = initializer;
     }
 
     // Copy constructor.
     Matrix(const same_type& other) {
-      // TODO: implement this function
-
-      // hint: reuse other overloaded operators, instead of writing
-      // this from scratch
+      (*this) = other;
     }
 
     // Equality comparison operator; uses approximate_equal to compare
     // individual elements.
     bool operator== (const same_type& right) const {
-      // TODO: implement this function
+      int i;
+
+      for (i = 0; i < HEIGHT; ++i) {
+        if(_rows[i] != right._rows[i]) {
+          return false;
+        }
+      }
+      return true;
     }
 
     // Equality comparison operator with a ptr_type.
@@ -452,17 +452,33 @@ namespace gmath {
 
     // Assignment from a scalar. Overwrites each element with s.
     same_type& operator= (SCALAR s) {
-      // TODO: implement this function
+      int i;
+
+      for (i = 0; i < HEIGHT; ++i) {
+        _rows[i] = s;
+      }
+      return (*this);
     }
 
     // Assignment from another vector (copy).
     same_type& operator= (const same_type& right) {
-      // TODO: implement this function
+      int i;
+
+      for (i = 0; i < HEIGHT; ++i) {
+        _rows[i] = right._rows[i];
+      }
+      return (*this);
     }
 
     // Addition with a matrix.
     ptr_type operator+ (const same_type& right) const {
-      // TODO: implement this function
+      ptr_type new_mat(new same_type(*this));
+      int i;
+
+      for (i = 0; i < HEIGHT; ++i) {
+        new_mat->_rows[i] = _rows[i] + right._rows[i];
+      }
+      return new_mat;
     }
 
     // Addition with a pointer to a matrix.
@@ -472,34 +488,46 @@ namespace gmath {
 
     // Subtraction with a vector.
     ptr_type operator- (const same_type& right) const {
-      // TODO: implement this function
+      return (*this) + (-right);
     }
 
     // Subtraction with a pointer to a vector.
     ptr_type operator- (ptr_type right) const {
-      // TODO: implement this function
-
-      // hint: reuse other overloaded operators, instead of writing
-      // this from scratch
+      return (*this) - (*right);
     }
 
     // Negation operator.
     ptr_type operator- () const {
-      // TODO: implement this function
+      ptr_type new_mat(new same_type(*this));
+      int i;
 
-      // hint: reuse other overloaded operators, instead of writing
-      // this from scratch
+      for (i = 0; i < HEIGHT; ++i) {
+        new_mat->_rows[i] = -new_mat->_rows[i];
+      }
+      return new_mat;
     }
 
     // Multiplication by a scalar.
     ptr_type operator* (SCALAR s) const {
-      // TODO: implement this function
+      ptr_type new_mat(new same_type(*this));
+      int i;
+
+      for (i = 0; i < HEIGHT; ++i) {
+        new_mat->_rows[i] = new_mat->_rows[i] * s;
+      }
+      return new_mat;
     }
 
     // Multiplication by a vector. Note the dimensions of the input
     // and output vectors.
     std::shared_ptr<column_type> operator* (const row_type& v) const {
-      // TODO: implement this function
+      std::shared_ptr<column_type> new_vec(new column_type);
+      int i, j;
+
+      for (i = 0; i < HEIGHT; ++i) {
+        new_vec[i] = _rows[i] * v;
+      }
+      return new_vec;
     }
 
     // Multiplication by a pointer to a vector. Note the dimensions of
@@ -543,7 +571,16 @@ namespace gmath {
 
     // Return the transpose of this matrix.
     std::shared_ptr<Matrix<SCALAR, WIDTH, HEIGHT> > transpose() const {
-      // TODO: implement this function
+      std::shared_ptr<Matrix<SCALAR, WIDTH, HEIGHT> >
+          new_mat(new Matrix<SCALAR, WIDTH, HEIGHT>());
+      int i, j;
+
+      for (i = 0; i < HEIGHT; ++i) {
+        for (j = 0; j < WIDTH; ++j) {
+          new_mat->_rows[j][i] = this->_rows[i][j];
+        }
+      }
+      return new_mat;
     }
 
     // Return the height of this matrix.
@@ -593,18 +630,14 @@ namespace gmath {
 
   template <typename SCALAR>
   SCALAR determinant(const Matrix<SCALAR, 2, 2>& m) {
-    // TODO: implement this function
-
-    // hint: reuse other overloaded operators, instead of writing
-    // this from scratch
+    return _rows[0][0] * _rows[1][1] - _rows[0][1] * _rows[1][0];
   }
 
   template <typename SCALAR>
   SCALAR determinant(const Matrix<SCALAR, 3, 3>& m) {
-    // TODO: implement this function
-
-    // hint: reuse other overloaded operators, instead of writing
-    // this from scratch
+    return _rows[0][0] * (_rows[1][1] * _rows[2][2] - _rows[1][2] * _rows[2][1]) -
+           _rows[0][1] * (_rows[1][0] * _rows[2][2] - _rows[1][2] * _rows[2][0]) +
+           _rows[0][2] * (_rows[1][0] * _rows[2][1] - _rows[1][1] * _rows[2][0]);
   }
 
   // Compute the inverse of a matrix. We only define this function for
@@ -612,6 +645,7 @@ namespace gmath {
 
   template <typename SCALAR>
   std::shared_ptr<Matrix<SCALAR, 2, 2> > inverse(const Matrix<SCALAR, 2, 2>& m) {
+    assert(this->determinant() != 0);
     // TODO: implement this function
 
     // hint: reuse other overloaded operators, instead of writing
@@ -620,12 +654,12 @@ namespace gmath {
 
   template <typename SCALAR>
   std::shared_ptr<Matrix<SCALAR, 3, 3> > inverse(const Matrix<SCALAR, 3, 3>& m) {
+    assert(this->determinant() != 0);
     // TODO: implement this function
 
     // hint: reuse other overloaded operators, instead of writing
     // this from scratch
   }
-  */
 
 }
 
