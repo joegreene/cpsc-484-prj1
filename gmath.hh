@@ -1,4 +1,3 @@
-
 //
 // gmath.hh
 //
@@ -100,7 +99,7 @@ namespace gmath {
   template <typename SCALAR, const int DIMENSION>
   class Vector {
   public:
-    
+
     // Alias for this very type.
     typedef Vector<SCALAR, DIMENSION> same_type;
 
@@ -109,7 +108,7 @@ namespace gmath {
 
   private:
     SCALAR _elements[DIMENSION];
-  
+
   public:
     // Initialize all elements to initializer, 0 by default.
     Vector(SCALAR initializer = 0) {
@@ -125,9 +124,9 @@ namespace gmath {
     // individual elements.
     bool operator== (const same_type& right) const {
       for (int i = 0; i < DIMENSION; ++i) {
-	if (!approximate_equal(_elements[i], right._elements[i])) {
-	  return false;
-	}
+        if (!approximate_equal(_elements[i], right._elements[i])) {
+          return false;
+        }
       }
       return true;
     }
@@ -137,7 +136,7 @@ namespace gmath {
       return (*this) == (*right);
     }
 
-    
+
     // Inequality comparison operator; uses approximate_equal to
     // compare individual elements.
     bool operator!= (const same_type& right) const {
@@ -155,7 +154,7 @@ namespace gmath {
       assert(is_index(index));
       // TODO: implement this function
     }
-  
+
     // Dereference operator, to obtain a non-const reference to an
     // element.
     SCALAR& operator[] (int index) {
@@ -240,7 +239,7 @@ namespace gmath {
       assert(DIMENSION > 1);
       // TODO: implement this function
     }
-    
+
     // Return true iff the homogeneous element indicates this is a
     // translation vector. (I.e. if the last element is zero.)
     bool is_homogeneous_translation() const {
@@ -312,12 +311,12 @@ namespace gmath {
     void print() {
       std::cout << "<";
       for (int i = 0; i < DIMENSION; ++i) {
-	if (i > 0) {
-	  std::cout << ", ";
-	}
-	std::cout << _elements[i];
+        if (i > 0) {
+          std::cout << ", ";
+        }
+        std::cout << _elements[i];
       }
-      std::cout << ">";       
+      std::cout << ">";
     }
 
     // Return the homogeneous element of this vector (i.e. the last
@@ -326,7 +325,7 @@ namespace gmath {
       // TODO: implement this function
     }
   };
-  
+
   // Matrix<SCALAR, HEIGHT, WIDTH> represents a mathematical vector of
   // HEIGHT x WIDTH dimension, where each base element is of type
   // SCALAR.
@@ -388,7 +387,7 @@ namespace gmath {
     bool operator!= (ptr_type right) const {
       return (*this) != (*right);
     }
-    
+
     // Dereference operator, to obtain a const reference to a row.
     const row_type& operator[] (int row) const {
       assert(is_row(row));
@@ -452,7 +451,7 @@ namespace gmath {
     std::shared_ptr<column_type> operator* (const row_type& v) const {
       // TODO: implement this function
     }
-    
+
     // Multiplication by a pointer to a vector. Note the dimensions of
     // the input and output vectors.
     std::shared_ptr<column_type> operator* (std::shared_ptr<row_type> v) const {
@@ -506,29 +505,29 @@ namespace gmath {
     // cout. This is intende for debugging purposes.
     void print(int element_width = 6) const {
       for (int i = 0; i < HEIGHT; ++i) {
-	if (i == 0) {
-	  std::cout << "┌";
-	} else if (i < (HEIGHT - 1)) {
-	  std::cout << "│";
-	} else {
-	  std::cout << "└";
-	}
+        if (i == 0) {
+          std::cout << "┌";
+        } else if (i < (HEIGHT - 1)) {
+          std::cout << "│";
+        } else {
+          std::cout << "└";
+        }
 
-	for (int j = 0; j < WIDTH; ++j) {
-	  std::cout << ' ' << std::right << std::setw(element_width) << _rows[i][j];
-	}
+        for (int j = 0; j < WIDTH; ++j) {
+          std::cout << ' ' << std::right << std::setw(element_width) << _rows[i][j];
+        }
 
-	std::cout << ' ';
+        std::cout << ' ';
 
-	if (i == 0) {
-	  std::cout << "┐";
-	} else if (i < (HEIGHT - 1)) {
-	  std::cout << "│";
-	} else {
-	  std::cout << "┘";
-	}
+        if (i == 0) {
+          std::cout << "┐";
+        } else if (i < (HEIGHT - 1)) {
+          std::cout << "│";
+        } else {
+          std::cout << "┘";
+        }
 
-	std::cout << std::endl;
+        std::cout << std::endl;
       }
     }
 
@@ -541,7 +540,7 @@ namespace gmath {
 
   // Compute the determinant of a matrix. We only define this function
   // for 2x2 and 3x3 square matrices.
-  
+
   template <typename SCALAR>
   SCALAR determinant(const Matrix<SCALAR, 2, 2>& m) {
     // TODO: implement this function
@@ -576,5 +575,7 @@ namespace gmath {
     // hint: reuse other overloaded operators, instead of writing
     // this from scratch
   }
-  
+
 }
+
+// vim: et ts=2 sw=2 :

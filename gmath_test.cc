@@ -1,4 +1,3 @@
-
 //
 // gmath_test.cc
 //
@@ -57,7 +56,7 @@ int main() {
   {
     Vector<double, 3> a, b(0.0), c(7.1), d(7.1), e(c), diff;
     Vector<double, 3>::ptr_type p(new Vector<double, 3>(e));
-    
+
     // constructors
     assert(a == b);
     assert(c == d);
@@ -142,7 +141,7 @@ int main() {
       assert( (8.0 / 2.0) == (*quotient)[1] );
       assert( (9.0 / 2.0) == (*quotient)[2] );
     }
-    
+
     // is_index
     assert(!a.is_index(-1));
     assert(a.is_index(0));
@@ -157,7 +156,7 @@ int main() {
     // is_homogeneous_translation
     assert(a.is_homogeneous_translation());
     assert(!b.is_homogeneous_translation());
-    
+
     // is_zero
     assert(a.is_zero());
     assert(!b.is_zero());
@@ -178,9 +177,9 @@ int main() {
       w[1] = 1;
       w[2] = 2;
       assert(approximate_equal(acos(13.0 / (sqrt(14.0) * sqrt(21.0))),
-			       v.angle(w)));
+                               v.angle(w)));
     }
-    
+
     // cross
     {
       // Example 1 from http://mathinsight.org/cross_product_examples
@@ -217,7 +216,7 @@ int main() {
       assert(0 == (*axb)[7]);
       assert(0 == (*axb)[8]);
     }
-    
+
     // dimension
     assert(3 == a.dimension());
 
@@ -229,11 +228,11 @@ int main() {
       assert(dist == b.distance(diff));
       assert(dist == diff.distance(b));
     }
-    
+
     // magnitude
     assert(0 == a.magnitude());
     assert(approximate_equal(sqrt(7*7 + 8*8 + 9*9),
-			     diff.magnitude()));
+                             diff.magnitude()));
 
     // normalized
     {
@@ -269,14 +268,14 @@ int main() {
     a[0][1] = -2;
     a[1][0] = 1;
     a[1][1] = 4;
-    
+
     Matrix<double, 2, 2>::ptr_type p_a(new Matrix<double, 2, 2>(a));
 
     // default constructor
     for (int i = 0; i < 2; ++i) {
       for (int j = 0; j < 2; ++j) {
-	assert(0 == zero[i][j]);
-	assert(1 == ones[i][j]);
+        assert(0 == zero[i][j]);
+        assert(1 == ones[i][j]);
       }
     }
 
@@ -284,9 +283,9 @@ int main() {
     {
       auto copy(a);
       for (int i = 0; i < 2; ++i) {
-	for (int j = 0; j < 2; ++j) {
-	  assert(copy[i][j] == a[i][j]);
-	}
+        for (int j = 0; j < 2; ++j) {
+          assert(copy[i][j] == a[i][j]);
+        }
       }
     }
 
@@ -310,17 +309,17 @@ int main() {
       // assign from matrix
       auto result = a;
       for (int i = 0; i < 2; ++i) {
-	for (int j = 0; j < 2; ++j) {
-	  assert(result[i][j] == a[i][j]);
-	}
+        for (int j = 0; j < 2; ++j) {
+          assert(result[i][j] == a[i][j]);
+        }
       }
 
       // assign from scalar
       result = 7;
       for (int i = 0; i < 2; ++i) {
-	for (int j = 0; j < 2; ++j) {
-	  assert(result[i][j] == 7);
-	}
+        for (int j = 0; j < 2; ++j) {
+          assert(result[i][j] == 7);
+        }
       }
     }
 
@@ -328,16 +327,16 @@ int main() {
     {
       auto result = id + a;
       for (int i = 0; i < 2; ++i) {
-	for (int j = 0; j < 2; ++j) {
-	  assert( (*result)[i][j] == (id[i][j] + a[i][j]) );
-	}
+        for (int j = 0; j < 2; ++j) {
+          assert( (*result)[i][j] == (id[i][j] + a[i][j]) );
+        }
       }
 
       result = id + p_a;
       for (int i = 0; i < 2; ++i) {
-	for (int j = 0; j < 2; ++j) {
-	  assert( (*result)[i][j] == (id[i][j] + a[i][j]) );
-	}
+        for (int j = 0; j < 2; ++j) {
+          assert( (*result)[i][j] == (id[i][j] + a[i][j]) );
+        }
       }
     }
 
@@ -345,16 +344,16 @@ int main() {
     {
       auto result = id - a;
       for (int i = 0; i < 2; ++i) {
-	for (int j = 0; j < 2; ++j) {
-	  assert( (*result)[i][j] == (id[i][j] - a[i][j]) );
-	}
+        for (int j = 0; j < 2; ++j) {
+          assert( (*result)[i][j] == (id[i][j] - a[i][j]) );
+        }
       }
 
       result = id - p_a;
       for (int i = 0; i < 2; ++i) {
-	for (int j = 0; j < 2; ++j) {
-	  assert( (*result)[i][j] == (id[i][j] - a[i][j]) );
-	}
+        for (int j = 0; j < 2; ++j) {
+          assert( (*result)[i][j] == (id[i][j] - a[i][j]) );
+        }
       }
     }
 
@@ -362,9 +361,9 @@ int main() {
     {
       auto result = -a;
       for (int i = 0; i < 2; ++i) {
-	for (int j = 0; j < 2; ++j) {
-	  assert( (*result)[i][j] == (-a[i][j]) );
-	}
+        for (int j = 0; j < 2; ++j) {
+          assert( (*result)[i][j] == (-a[i][j]) );
+        }
       }
     }
 
@@ -372,9 +371,9 @@ int main() {
     {
       auto result = a * 7;
       for (int i = 0; i < 2; ++i) {
-	for (int j = 0; j < 2; ++j) {
-	  assert( (*result)[i][j] == (a[i][j] * 7) );
-	}
+        for (int j = 0; j < 2; ++j) {
+          assert( (*result)[i][j] == (a[i][j] * 7) );
+        }
       }
     }
 
@@ -389,16 +388,16 @@ int main() {
       std::shared_ptr<Vector<double, 2> > ptr(new Vector<double, 2>(v));
       auto result2 = a * ptr;
       assert((*result) == (*result2));
-    }    
-    
+    }
+
     // * (matrix multiply)
     {
       auto result = id * id;
       assert(*result == id);
-      
+
       result = id * a;
       assert(*result == a);
-      
+
       result = a * zero;
       assert(*result == zero);
 
@@ -430,12 +429,12 @@ int main() {
     assert(id.is_square());
     {
       assert(id.is_square());
-      
+
       Matrix<double, 2, 3> wide;
       assert(!wide.is_square());
       assert(2 == wide.height());
       assert(3 == wide.width());
-      
+
       Matrix<double, 3, 2> narrow;
       assert(!narrow.is_square());
       assert(3 == narrow.height());
@@ -500,3 +499,5 @@ int main() {
 
   return 0;
 }
+
+// vim: et ts=2 sw=2 :
