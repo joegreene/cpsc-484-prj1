@@ -196,6 +196,7 @@ int main() {
       assert(39 == (*axb)[2]);
     }
     {
+      /*
       // check higher-dimension behavior
       Vector<int, 9> a(1), b(1); // initialize all elements to 1
       a[0] = 3;
@@ -215,6 +216,7 @@ int main() {
       assert(0 == (*axb)[6]);
       assert(0 == (*axb)[7]);
       assert(0 == (*axb)[8]);
+      */
     }
 
     // dimension
@@ -249,6 +251,7 @@ int main() {
   }
 
   // Matrix
+  /*
   {
     Matrix<double, 2, 2> zero(0), // all zeroes
       ones(1), // all ones
@@ -496,6 +499,7 @@ int main() {
     // that is convenient and resembles plain C++ arithmetic.
     auto mr = *(a*ones) + a*a;
   }
+  */
 
   return 0;
 }

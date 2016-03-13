@@ -112,12 +112,12 @@ namespace gmath {
   public:
     // Initialize all elements to initializer, 0 by default.
     Vector(SCALAR initializer = 0) {
-      // TODO: implement this function
+      (*this) = initializer;
     }
 
     // Copy constructor.
     Vector(const same_type& other) {
-      // TODO: implement this function
+      (*this) = other;
     }
 
     // Equality comparison operator; uses approximate_equal to compare
@@ -152,25 +152,33 @@ namespace gmath {
     // element.
     const SCALAR& operator[] (int index) const {
       assert(is_index(index));
-      // TODO: implement this function
+      return _elements[index];
     }
 
     // Dereference operator, to obtain a non-const reference to an
     // element.
     SCALAR& operator[] (int index) {
       assert(is_index(index));
-      // TODO: implement this function
+      return _elements[index];
     }
 
     // Assignment from a scalar. Overwrites each element with s.
     same_type& operator= (SCALAR s) {
-      // TODO: implement this function
+      int i;
+
+      for (i = 0; i < DIMENSION; ++i) {
+        _elements[i] = s;
+      }
       return (*this);
     }
 
     // Assignment from another vector (copy).
     same_type& operator= (const same_type& right) {
-      // TODO: implement this function
+      int i;
+
+      for (i = 0; i < DIMENSION; ++i) {
+        _elements[i] = right._elements[i];
+      }
       return (*this);
     }
 
@@ -181,7 +189,13 @@ namespace gmath {
 
     // Addition with a vector.
     ptr_type operator+ (const same_type& right) const {
-      // TODO: implement this function
+      ptr_type new_vec(new same_type(*this));
+      int i;
+
+      for (i = 0; i < DIMENSION; ++i) {
+        new_vec->_elements[i] += right._elements[i];
+      }
+      return new_vec;
     }
 
     // Addition with a pointer to a vector.
@@ -191,7 +205,7 @@ namespace gmath {
 
     // Subtraction with a vector.
     ptr_type operator- (const same_type& right) const {
-      // TODO: implement this function
+      return (*this) + (-right);
     }
 
     // Subtraction with a pointer to a vector.
@@ -202,20 +216,35 @@ namespace gmath {
     // Negation operator. Negates (toggles sign of) each element of
     // the vector.
     ptr_type operator- () const {
-      // TODO: implement this function
+      ptr_type new_vec(new same_type());
+      int i;
 
-      // hint: reuse other overloaded operators, instead of writing
-      // this from scratch
+      for (i = 0; i < DIMENSION; ++i) {
+        new_vec->_elements[i] = -_elements[i];
+      }
+      return new_vec;
     }
 
     // Multiply by a scalar.
     ptr_type operator* (SCALAR s) const {
-      // TODO: implement this function
+      ptr_type new_vec(new same_type(*this));
+      int i;
+
+      for (i = 0; i < DIMENSION; ++i) {
+        new_vec->_elements[i] *= s;
+      }
+      return new_vec;
     }
 
     // Multiply by another vector (dot product).
     SCALAR operator* (const same_type& right) const {
-      // TODO: implement this function
+      SCALAR result = 0;
+      int i;
+
+      for (i = 0; i < DIMENSION; ++i) {
+        result += (_elements[i] * right._elements[i]);
+      }
+      return result;
     }
 
     // Multiply by a pointer to another vector (dot product).
@@ -225,7 +254,13 @@ namespace gmath {
 
     // Division by a scalar.
     ptr_type operator/ (SCALAR s) const {
-      // TODO: implement this function
+      ptr_type new_vec(new same_type(*this));
+      int i;
+
+      for (i = 0; i < DIMENSION; ++i) {
+        new_vec->_elements[i] /= s;
+      }
+      return new_vec;
     }
 
     // Return true iff i is a valid element index.
@@ -237,29 +272,34 @@ namespace gmath {
     // point. (I.e. if the last element is nonzero.)
     bool is_homogeneous_point() const {
       assert(DIMENSION > 1);
-      // TODO: implement this function
+      return _elements[DIMENSION - 1] != 0;
     }
 
     // Return true iff the homogeneous element indicates this is a
     // translation vector. (I.e. if the last element is zero.)
     bool is_homogeneous_translation() const {
       assert(DIMENSION > 1);
-      // TODO: implement this function
+      return _elements[DIMENSION - 1] == 0;
     }
 
     // Return true iff all elements are zero.
     bool is_zero() const {
-      // TODO: implement this function
+      int i;
+      int length = (is_homogeneous_point()) ? DIMENSION-1 : DIMENSION;
+
+      for (i = 0; i < length; ++i) {
+        if (_elements[i] != 0) {
+          return false;
+        }
+      }
+      return true;
     }
 
     // Return the angle, in radians, between this vector and
     // another. This function assumes that the two vectors each
     // represent a point relative to the origin.
     angle_type angle(const same_type& right) const {
-      // TODO: implement this function
-
-      // hint: reuse other overloaded operators, instead of writing
-      // this from scratch
+      return acos(((*this) * (right)) / (this->magnitude() * right.magnitude()));
     }
 
     // Compute the cross product between this and another vector. The
@@ -267,7 +307,16 @@ namespace gmath {
     // function asserts that DIMENSION is 3.
     ptr_type cross(const same_type& right) const {
       assert(DIMENSION == 3);
-      // TODO: implement this function
+      ptr_type new_vec(new same_type());
+      // See Marschner page 25 (Sect. 2.4)
+      // Cthulhu wrote this.
+      new_vec->_elements[0] = this->_elements[1] * right._elements[2] -
+                              this->_elements[2] * right._elements[1];
+      new_vec->_elements[1] = this->_elements[2] * right._elements[0] -
+                              this->_elements[0] * right._elements[2];
+      new_vec->_elements[2] = this->_elements[0] * right._elements[1] -
+                              this->_elements[1] * right._elements[0];
+      return new_vec;
     }
 
     // Return the dimension of this vector.
@@ -279,19 +328,21 @@ namespace gmath {
     // vector. This function assumes that each vector represents a
     // point. The returned value is always a non-negative scalar.
     SCALAR distance(const same_type& p) const {
-      // TODO: implement this function
-
-      // hint: reuse other overloaded operators, instead of writing
-      // this from scratch
+      same_type diff;
+      diff = (*this) - p;
+      return diff.magnitude();
     }
 
     // Return the magnitude of this vector, i.e. for vector v, the
     // quantity denoted ||v|| .
     SCALAR magnitude() const {
-      // TODO: implement this function
+      SCALAR sum = 0;
+      int i;
 
-      // hint: reuse other overloaded operators, instead of writing
-      // this from scratch
+      for (i = 0; i < DIMENSION; ++i) {
+        sum += _elements[i] * _elements[i];
+      }
+      return (SCALAR) sqrt((double) sum);
     }
 
     // Return a pointer to a normalized version of this vector,
@@ -299,11 +350,9 @@ namespace gmath {
     // exactly 1.
     ptr_type normalized() const {
       assert(!is_zero());
-
-      // TODO: implement this function
-
-      // hint: reuse other overloaded operators, instead of writing
-      // this from scratch
+      ptr_type new_vec(new same_type(*this));
+      new_vec = *new_vec / new_vec->magnitude();
+      return new_vec;
     }
 
     // Utility function to print a representation of this vector to
@@ -322,10 +371,11 @@ namespace gmath {
     // Return the homogeneous element of this vector (i.e. the last
     // element).
     SCALAR w() const {
-      // TODO: implement this function
+      return _elements[DIMENSION - 1];
     }
   };
 
+  /*
   // Matrix<SCALAR, HEIGHT, WIDTH> represents a mathematical vector of
   // HEIGHT x WIDTH dimension, where each base element is of type
   // SCALAR.
@@ -575,6 +625,7 @@ namespace gmath {
     // hint: reuse other overloaded operators, instead of writing
     // this from scratch
   }
+  */
 
 }
 
