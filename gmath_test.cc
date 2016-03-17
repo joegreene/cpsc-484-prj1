@@ -196,9 +196,8 @@ int main() {
       assert(39 == (*axb)[2]);
     }
     {
-      /*
       // check higher-dimension behavior
-      Vector<int, 9> a(1), b(1); // initialize all elements to 1
+      Vector<int, 3> a(1), b(1); // initialize all elements to 1
       a[0] = 3;
       a[1] = -3;
       a[2] = 1;
@@ -209,14 +208,6 @@ int main() {
       assert(-15 == (*axb)[0]);
       assert(-2 == (*axb)[1]);
       assert(39 == (*axb)[2]);
-      // all elements after the first 3 should be 0
-      assert(0 == (*axb)[3]);
-      assert(0 == (*axb)[4]);
-      assert(0 == (*axb)[5]);
-      assert(0 == (*axb)[6]);
-      assert(0 == (*axb)[7]);
-      assert(0 == (*axb)[8]);
-      */
     }
 
     // dimension
