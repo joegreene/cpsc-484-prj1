@@ -461,7 +461,6 @@ int main() {
     }
 
     // 3D determinant and inverse
-    /*
     {
       Matrix<double, 3, 3> m;
       m[0][0] = 9;
@@ -485,7 +484,6 @@ int main() {
       assert(approximate_equal(0.112195, (*inv)[2][1]));
       assert(approximate_equal(-0.102439, (*inv)[2][2]));
     }
-    */
 
     // Show off that we can perform linear algebra operations in a way
     // that is convenient and resembles plain C++ arithmetic.
