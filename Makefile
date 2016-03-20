@@ -1,7 +1,7 @@
 # Makefile
 
 objects := gmath_test
-CFLAGS := -Wall -std=c++11
+CFLAGS := -Wall -std=c++11 -Wextra -Wpedantic
 LDFLAGS := -Wall
 CC := clang++
 

@@ -522,10 +522,10 @@ namespace gmath {
     // and output vectors.
     std::shared_ptr<column_type> operator* (const row_type& v) const {
       std::shared_ptr<column_type> new_vec(new column_type);
-      int i, j;
+      int i;
 
       for (i = 0; i < HEIGHT; ++i) {
-        new_vec[i] = _rows[i] * v;
+        (*new_vec)[i] = _rows[i] * v;
       }
       return new_vec;
     }
@@ -546,7 +546,16 @@ namespace gmath {
     // and implement.
     ptr_type operator* (const same_type& right) const {
       assert(is_square());
-      // TODO: implement this function
+      ptr_type new_mat(new same_type(0));
+      int i, j, k;
+      for (i = 0; i < HEIGHT; ++i) {
+        for (j = 0; j < WIDTH; ++j) {
+          for (k = 0; k < HEIGHT; ++k) {
+            (*new_mat)[i][j] += (*this)[i][k] * right[k][j];
+          }
+        }
+      }
+      return new_mat;
     }
 
     // Multiplication by a pointer to a matrix.
@@ -630,14 +639,14 @@ namespace gmath {
 
   template <typename SCALAR>
   SCALAR determinant(const Matrix<SCALAR, 2, 2>& m) {
-    return _rows[0][0] * _rows[1][1] - _rows[0][1] * _rows[1][0];
+    return m[0][0] * m[1][1] - m[0][1] * m[1][0];
   }
 
   template <typename SCALAR>
   SCALAR determinant(const Matrix<SCALAR, 3, 3>& m) {
-    return _rows[0][0] * (_rows[1][1] * _rows[2][2] - _rows[1][2] * _rows[2][1]) -
-           _rows[0][1] * (_rows[1][0] * _rows[2][2] - _rows[1][2] * _rows[2][0]) +
-           _rows[0][2] * (_rows[1][0] * _rows[2][1] - _rows[1][1] * _rows[2][0]);
+    return m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) -
+           m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) +
+           m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
   }
 
   // Compute the inverse of a matrix. We only define this function for
@@ -645,21 +654,27 @@ namespace gmath {
 
   template <typename SCALAR>
   std::shared_ptr<Matrix<SCALAR, 2, 2> > inverse(const Matrix<SCALAR, 2, 2>& m) {
-    assert(this->determinant() != 0);
-    // TODO: implement this function
+    assert(determinant(m) != 0);
+    std::shared_ptr<Matrix<SCALAR, 2, 2> > new_mat(new Matrix<SCALAR, 2, 2>(0));
+    SCALAR det;
 
-    // hint: reuse other overloaded operators, instead of writing
-    // this from scratch
+    (*new_mat)[0][0] = m[1][1];
+    (*new_mat)[0][1] = -m[0][1];
+    (*new_mat)[1][0] = -m[1][0];
+    (*new_mat)[1][1] = m[0][0];
+    det = determinant(m);
+    *new_mat = *(*new_mat * (1.0 / det));
+    return new_mat;
   }
 
-  template <typename SCALAR>
+  /* template <typename SCALAR>
   std::shared_ptr<Matrix<SCALAR, 3, 3> > inverse(const Matrix<SCALAR, 3, 3>& m) {
     assert(this->determinant() != 0);
     // TODO: implement this function
 
     // hint: reuse other overloaded operators, instead of writing
     // this from scratch
-  }
+  } */
 
 }
 
