@@ -654,24 +654,23 @@ namespace gmath {
 
   template <typename SCALAR>
   std::shared_ptr<Matrix<SCALAR, 2, 2> > inverse(const Matrix<SCALAR, 2, 2>& m) {
-    assert(determinant(m) != 0);
+    SCALAR det = determinant(m);
+    assert(det != 0);
     std::shared_ptr<Matrix<SCALAR, 2, 2> > new_mat(new Matrix<SCALAR, 2, 2>(0));
-    SCALAR det;
 
     (*new_mat)[0][0] = m[1][1];
     (*new_mat)[0][1] = -m[0][1];
     (*new_mat)[1][0] = -m[1][0];
     (*new_mat)[1][1] = m[0][0];
-    det = determinant(m);
     *new_mat = *(*new_mat * (1.0 / det));
     return new_mat;
   }
 
   template <typename SCALAR>
   std::shared_ptr<Matrix<SCALAR, 3, 3> > inverse(const Matrix<SCALAR, 3, 3>& m) {
-    assert(determinant(m) != 0);
+    SCALAR det = determinant(m);
+    assert(det != 0);
     std::shared_ptr<Matrix<SCALAR, 3, 3> > new_mat(new Matrix<SCALAR, 3, 3>(m));
-    SCALAR det;
     (*new_mat)[0][0] = m[1][1] * m[2][2] - m[2][1] * m[1][2];
     (*new_mat)[1][0] = -(m[1][0] * m[2][2] - m[2][0] * m[1][2]);
     (*new_mat)[2][0] = m[1][0] * m[2][1] - m[2][0] * m[1][1];
@@ -681,7 +680,6 @@ namespace gmath {
     (*new_mat)[0][2] = m[0][1] * m[1][2] - m[1][1] * m[0][2];
     (*new_mat)[1][2] = -(m[0][0] * m[1][2] - m[1][0] * m[0][2]);
     (*new_mat)[2][2] = m[0][0] * m[1][1] - m[1][0] * m[0][1];
-    det = determinant(m);
     *new_mat = *(*new_mat * (1.0 / det));
     return new_mat;
   }
